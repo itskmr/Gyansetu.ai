@@ -1,0 +1,136 @@
+// src/services/api.js
+import axios from "axios";
+
+// Base API URL - change this to your deployed backend URL
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Add a request interceptor to include the auth token in all requests
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Authentication services
+export const authService = {
+  // Register new user
+  signup: async (userData) => {
+    try {
+      const response = await api.post("/api/signup", userData);
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      // Pass through the full error response for role validation errors
+      if (error.response && error.response.status === 403) {
+        throw error;
+      }
+      throw error.response ? error.response.data : error;
+    }
+  },
+
+  // Login user
+  login: async (credentials) => {
+    try {
+      const response = await api.post("/api/login", credentials);
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      // Pass through the full error response for role validation errors
+      if (error.response && error.response.status === 403) {
+        throw error;
+      }
+      throw error.response ? error.response.data : error;
+    }
+  },
+
+  // OAuth login/signup
+  verifyToken: async (token, role) => {
+    try {
+      const response = await api.post("/api/verifyToken", { token, role });
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      // Pass through the full error response for role validation errors
+      if (error.response && error.response.status === 403) {
+        throw error;
+      }
+      throw error.response ? error.response.data : error;
+    }
+  },
+
+  // Request password reset
+  forgotPassword: async (email) => {
+    try {
+      const response = await api.post("/api/forgot-password", { email });
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error;
+    }
+  },
+
+  // Reset password with token
+  resetPassword: async (token, password) => {
+    try {
+      const response = await api.post("/api/reset-password", {
+        token,
+        password,
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error;
+    }
+  },
+
+  // Get current user
+  getCurrentUser: async () => {
+    try {
+      const response = await api.get("/api/me");
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error;
+    }
+  },
+
+  // Logout user
+  logout: () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+  },
+
+  // Check if user is logged in
+  isAuthenticated: () => {
+    return !!localStorage.getItem("authToken");
+  },
+
+  // Get current user from localStorage
+  getUser: () => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+  },
+};
+
+export default api;

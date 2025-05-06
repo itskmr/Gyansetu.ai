@@ -1,0 +1,64 @@
+/* Role selection styling */
+.role-selection {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.role-selection-title {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.role-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.role-option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-option.selected {
+  background-color: rgba(209, 194, 240, 0.5);
+  border-color: #8a2be2;
+}
+
+.role-option-icon {
+  margin-left: 0.5rem;
+}
+
+/* Role mismatch indicator */
+.correct-role-highlight {
+  animation: pulseHighlight 2s infinite;
+  border: 2px solid #4caf50 !important;
+  background-color: rgba(76, 175, 80, 0.1);
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+.role-error-message {
+  color: #ff3333;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  text-align: left;
+}
+
+@keyframes pulseHighlight {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
