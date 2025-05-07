@@ -1,4 +1,3 @@
-// src/App.js
 import React from "react";
 import {
   BrowserRouter as Router,
@@ -9,12 +8,12 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import StudentAssignmentInterface from "./components/students/Assignment/StudentAssignment";
 
 // Auth Pages
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import ResetPasswordPage from "./pages/ResetPassword";
+
 
 // Protected Routes Component
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
@@ -25,16 +24,29 @@ import TeacherDashboard from "./pages/dashboards/TeacherDashboard";
 import ParentDashboard from "./pages/dashboards/ParentDashboard";
 import InstituteDashboard from "./pages/dashboards/InstituteDashboard";
 
+// Student Dashboard Components (from second App.jsx)
+import ChatbotPage from "./pages/ChatbotPage";
+
+// Student Features
+import StudentAssignmentInterface from "./components/students/Assignment/StudentAssignment";
+
+
 // Teacher Features
 import AssignmentPage from "./components/teacher/Assignments/AssignmentPage";
 import AIGenerate from "./components/teacher/Assignments/AIGnerate";
 import TeacherMainCalender from "./components/teacher/calender/MainCalenderTeacher";
 
+// Quiz Features (from second App.jsx)
+import QuizCreationPage from "./components/students/Quiz/QuizCreationPage";
+import QuizPlayPage from "./components/students/Quiz/QuizPlayPage";
+import QuizResultsPage from "./components/students/Quiz/QuizResultsPage";
+import QuizHistoryPage from "./components/students/Quiz/QuizHistoryPage";
+
 // Auth Service
 import authService from "./services/api/authService";
-import MainChatbot from "./components/students/Chatbot/MainChatbot";
+import StudentDashboardPage from "./pages/dashboards/StudentDashboard";
 
-// Wrapper component to handle location-based re-rendering
+
 function AppContent() {
   const location = useLocation();
 
@@ -46,7 +58,6 @@ function AppContent() {
       return <Navigate to="/login" replace />;
     }
 
-    // Redirect to the appropriate dashboard based on user role
     switch (user.role) {
       case "student":
         return <Navigate to="/Studentdashboard" replace />;
@@ -137,18 +148,30 @@ function AppContent() {
 
         {/* Student Routes */}
         <Route
-          path="/Studentdashboard*"
+          path="/Studentdashboard"
           element={
             <ProtectedRoute allowedRoles={["student"]}>
-              <StudentDashboard />
+              <StudentDashboardPage />
             </ProtectedRoute>
           }
-        />
+        >
+          
+      
+         
+       
+        
+          {/* Quiz Routes */}
+          <Route path="quiz" element={<QuizCreationPage />} />
+          <Route path="quiz/create" element={<QuizCreationPage />} />
+          <Route path="quiz/play" element={<QuizPlayPage />} />
+          <Route path="quiz/results" element={<QuizResultsPage />} />
+          <Route path="quiz/history" element={<QuizHistoryPage />} />
+        </Route>
         <Route
           path="/chatbot"
           element={
             <ProtectedRoute allowedRoles={["student"]}>
-              <MainChatbot />
+              <ChatbotPage />
             </ProtectedRoute>
           }
         />

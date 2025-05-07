@@ -1,0 +1,20 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>Educational Illustration: give the summary of this pdf</title>
+  <desc>A placeholder illustration about give the summary of this pdf</desc>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="hsl(302, 70%, 80%)" />
+  
+  <!-- Center circle -->
+  <circle cx="512" cy="512" r="200" fill="white" />
+  
+  <!-- Text -->
+  <text x="512" y="512" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="hsl(302, 70%, 40%)" text-anchor="middle" dominant-baseline="central">GST</text>
+  
+  <!-- Title -->
+  <rect x="112" y="768" width="800" height="60" rx="10" fill="white" opacity="0.9" />
+  <text x="512" y="808" font-family="Arial, sans-serif" font-size="24" fill="hsl(302, 70%, 40%)" text-anchor="middle" dominant-baseline="central">
+    Educational Illustration: give the summary of this pdf
+  </text>
+</svg>
